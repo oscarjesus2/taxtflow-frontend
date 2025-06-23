@@ -1,0 +1,42 @@
+.layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f9fafb;
+}
+
+.layout-body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.main-content {
+  flex: 1;
+  padding: 24px;
+  background-color: #ffffff;
+  overflow-y: auto;
+}
+.layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f9fafb;
+}
+
+.layout-body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.main-content {
+  flex: 1;
+  padding: 24px;
+  border-radius: 8px;
+  background-color: #f8f9fc;
+  overflow-y: auto;
+  min-height: calc(100vh - 60px);
+}

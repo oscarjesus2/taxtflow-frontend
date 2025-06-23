@@ -1,0 +1,101 @@
+<div class="form-container" *ngIf="programacion">
+  <h3>{{ programacion.id ? 'Editar' : 'Nueva' }} Programación</h3>
+
+  <form #f="ngForm" (ngSubmit)="onSubmit()">
+
+    <!-- ───── Grid de campos ───── -->
+    <div class="form-grid">
+
+      <!-- Cliente -->
+      <div class="form-group">
+        <label for="cliente">Cliente *</label>
+        <select id="cliente" name="cliente"
+                [(ngModel)]="programacion.clienteId"
+                required>
+          <option *ngFor="let c of clientes" [value]="c.id">{{ c.razonSocial }}</option>
+        </select>
+      </div>
+
+      <!-- Tipo informe -->
+      <div class="form-group">
+        <label for="tipoInforme">Tipo de Informe *</label>
+        <select id="tipoInforme" name="tipoInforme"
+                [(ngModel)]="programacion.tipoInforme"
+                required>
+          <option *ngFor="let t of tipoInformeKeys" [value]="t">
+            {{ tipoInformeDescripcion[t] }}
+          </option>
+        </select>
+      </div>
+
+      <!-- Frecuencia -->
+      <div class="form-group">
+        <label for="frecuencia">Frecuencia *</label>
+        <select id="frecuencia" name="frecuencia"
+                [(ngModel)]="programacion.frecuencia"
+                required>
+          <option value="DIARIO">DIARIO</option>
+          <option value="SEMANAL">SEMANAL</option>
+          <option value="MENSUAL">MENSUAL</option>
+        </select>
+      </div>
+
+      <!-- Fecha ejecución -->
+      <div class="form-group">
+        <label for="fecha">Fecha Inicio *</label>
+        <input id="fecha" type="date" name="fecha"
+               [(ngModel)]="programacion.fechaInicio" required>
+      </div>
+
+      <!-- Hora ejecución -->
+      <div class="form-group">
+        <label for="hora">Hora Ejecución *</label>
+        <input id="hora" type="time" name="hora"
+               [(ngModel)]="programacion.horaEjecucion" required>
+      </div>
+
+      <!-- Destino -->
+      <div class="form-group">
+        <label for="destino">Destino *</label>
+        <select id="destino" name="destino"
+                [(ngModel)]="programacion.destino" required>
+          <option value="FTP">FTP</option>
+          <option value="GOOGLE_DRIVE">Google Drive</option>
+        </select>
+      </div>
+
+      <!-- Nombre archivo -->
+      <div class="form-group">
+        <label for="archivo">Nombre Archivo</label>
+        <input id="archivo" name="archivo"
+               [(ngModel)]="programacion.nombreArchivo">
+      </div>
+
+      <!-- Formato -->
+      <div class="form-group">
+        <label for="formato">Formato</label>
+        <select id="formato" name="formato"
+                [(ngModel)]="programacion.formato">
+          <option value="EXCEL">EXCEL</option>
+          <option value="ZIP">ZIP</option>
+        </select>
+      </div>
+
+      <!-- Activo -->
+      <div class="form-group check">
+        <label>
+          <input type="checkbox"
+                 [(ngModel)]="programacion.activo"
+                 name="activo"> Activo
+        </label>
+      </div>
+
+    </div> <!-- /grid -->
+
+    <!-- ───── Botones ───── -->
+    <div class="button-group">
+      <button type="button" class="cancel" (click)="onCancel()">Cancelar</button>
+      <button type="submit" class="save" [disabled]="f.invalid">Guardar</button>
+    </div>
+  </form>
+</div>

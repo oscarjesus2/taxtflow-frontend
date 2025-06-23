@@ -1,0 +1,61 @@
+<div class="informes-container">
+  <div class="header">
+    <h2>Informes Generados</h2>
+    <button class="btn-generar" (click)="abrirDialogoGenerar()">+ Generar Informe</button>
+  </div>
+
+  <div class="filtros">
+
+    <div class="form-group">
+      <label>Cliente</label>
+      <select [(ngModel)]="filtroClienteId" (change)="filtrarInformes()">
+        <option value="">Todos</option>
+        <option *ngFor="let cliente of clientes" [value]="cliente.id">{{ cliente.razonSocial }}</option>
+      </select>
+    </div>
+
+
+
+    <div class="form-group">
+      <label>Tipo de Informe</label>
+      <select [(ngModel)]="filtroTipo" (change)="filtrarInformes()">
+        <option value="">Todos</option>
+        <option *ngFor="let key of tipoInformeKeys" [value]="key">
+          {{ tipoInformeDescripcion[key] }}
+        </option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Año</label>
+      <select [(ngModel)]="filtroAnio" name="anio" (change)="filtrarInformes()" required>
+        <option value="">Todos</option>
+        <option *ngFor="let a of anios" [value]="a">{{ a }}</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Mes</label>
+      <select [(ngModel)]="filtroMes" (change)="filtrarInformes()">
+        <option value="">Todos</option>
+        <option *ngFor="let m of meses" [value]="m.valor">{{ m.nombre }}</option>
+      </select>
+    </div>
+    <div class="form-group">
+
+      <button class="btn-refrescar-lista" (click)="refrescarLista()" [disabled]="isRefrescando">
+        <i *ngIf="!isRefrescando" class="fas fa-sync-alt"></i>
+        <i *ngIf="isRefrescando" class="fas fa-spinner fa-spin"></i>
+        {{ isRefrescando ? 'Actualizando...' : 'Actualizar lista' }}
+      </button>
+    </div>
+  </div>
+
+
+
+  <div class="grid">
+    <app-informe-card *ngFor="let informe of informesFiltrados" [informe]="informe" (eliminar)="eliminarInforme($event)"
+      (reintentar)="refrescarLista()">
+    </app-informe-card>
+  </div>
+</div>

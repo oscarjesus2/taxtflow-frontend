@@ -1,0 +1,350 @@
+.card-informe {
+    position: relative; 
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  border-left: 6px solid transparent;
+  transition: box-shadow 0.2s ease-in-out;
+}
+
+.card-informe:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.card-informe.ventas .card-header {
+  background-color: #eafaf0;
+}
+
+.card-informe.compras .card-header {
+  background-color: #e8f1fc;
+}
+
+
+.card-header {
+  padding: 0.75rem 1rem;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  background-color: #f5f5f5;
+  font-size: 0.95rem;
+  color: #333;
+}
+.card-body {
+  padding: 1rem;
+  font-size: 0.9rem;
+  color: #555;
+}
+.card-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-top: 1px solid #eee;
+}
+
+.card-subinfo {
+  font-size: 0.9rem;
+  color: #666;
+  line-height: 1.4;
+}
+
+.card-acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.card-acciones button {
+  padding: 0.4rem 0.9rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-descargar, .btn-eliminar {
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  cursor: pointer;
+  color: #444;
+}
+
+.btn-descargar:hover {
+  color: #007bff;
+}
+
+.btn-eliminar:hover {
+  color: #dc3545;
+}
+ 
+
+/* Colores por tipo de informe */
+.card-informe.ventas {
+  border-left-color: #28a745; /* verde */
+}
+.card-informe.compras {
+  border-left-color: #007bff; /* azul */
+}
+ 
+.estado-indicador {
+  position: absolute;
+  /* top: 10px;
+  right: 10px; */
+    bottom: 8px;       /* En lugar de top */
+  left: 8px;         /* En lugar de right */
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  z-index: 1;
+}
+
+/* Estados */
+.estado-pendiente {
+  background-color: gray;
+  animation: pulse 2s infinite;
+}
+.estado-en-proceso {
+  background-color: orange;
+  animation: rotating 1.2s linear infinite;
+}
+.estado-finalizado {
+  background-color: green;
+}
+.estado-error {
+  background-color: red;
+  animation: shake 0.5s ease-in-out infinite;
+}
+
+/* Animaciones */
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.3); opacity: 0.4; }
+  100% { transform: scale(1); opacity: 0.8; }
+}
+
+@keyframes rotating {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-2px); }
+  75% { transform: translateX(2px); }
+}
+.animacion-pendiente {
+  animation: fadeInOpacity 1.5s ease-in-out infinite alternate;
+}
+.animacion-en-proceso {
+  animation: borderGlow 2s infinite;
+}
+.animacion-error {
+  animation: shakeCard 0.5s ease-in-out 3;
+}
+
+@keyframes fadeInOpacity {
+  0% { opacity: 0.7; }
+  100% { opacity: 1; }
+}
+
+@keyframes borderGlow {
+  0% { box-shadow: 0 0 4px orange; }
+  50% { box-shadow: 0 0 10px orange; }
+  100% { box-shadow: 0 0 4px orange; }
+}
+
+@keyframes shakeCard {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-3px); }
+  75% { transform: translateX(3px); }
+}
+
+.card-footer .btn-descargar {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 500;
+  background-color: #e7f3ff;
+  border: 1px solid #b3d4fc;
+  color: #0d6efd;
+}
+
+.card-footer .btn-descargar:hover {
+  background-color: #d0e7ff;
+}
+
+/* Botones de fases listas */
+.btn-fase-lista {
+  background-color: #e7f3ff;
+  border: 1px solid #b3d4fc;
+  color: #0d6efd;
+  border-radius: 6px;
+  padding: 6px 12px;
+  margin: 4px 6px 0 0;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  position: relative;
+  padding-right: 1.5rem; /* espacio para el ícono "X" */
+}
+
+.btn-fase-lista:hover {
+  background-color: #d0e7ff;
+}
+/* Indicador de fases pendientes */
+.fase-pendiente {
+  background-color: #fff8d6;
+  color: #856404;
+  font-size: 0.8rem;
+  padding: 3px 8px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-left: 5px;
+  margin-top: 4px;
+}
+/* Título de fases pendientes */
+.card-footer .footer-left {
+  font-size: 0.85rem;
+  color: #444;
+  font-weight: 500;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+}
+/* Fases listas */
+.card-subinfo {
+  margin-top: 0.75rem;
+  font-size: 0.88rem;
+  color: #444;
+}
+
+.fase-botones {
+  margin-top: 0.4rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.btn-fase-remove {
+  position: absolute;
+  top: 4px;
+  right: 6px;
+  font-size: 0.75rem;
+  color: #888;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.btn-fase-remove:hover {
+  color: #555;
+}
+
+/* Footer */
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 0.75rem 1rem;
+  border-top: 1px solid #eee;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* Bloque izquierdo (pendientes) */
+.footer-pendientes {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.pendientes-titulo {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #555;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.25rem;
+}
+
+.pendientes-lista {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.fase-pendiente {
+  background-color: #fff8d6;
+  color: #856404;
+  font-size: 0.8rem;
+  padding: 3px 8px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+/* Botón eliminar alineado a la derecha */
+.footer-acciones {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.btn-eliminar {
+  background: none;
+  border: none;
+  color: #555;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.btn-eliminar:hover {
+  color: #dc3545;
+}
+
+.tipo-resaltado {
+  padding: 6px 10px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  font-weight: 600;
+  display: inline-block;
+  color: white;
+}
+
+/* Reutiliza tus clases existentes para colores */
+.tipo-resaltado.ventas {
+  background-color: #28a745;
+}
+
+.tipo-resaltado.compras {
+  background-color: #007bff;
+}
+
+.tipo-resaltado.resumen {
+  background-color: #ffc107;
+  color: #333;
+}
+
+.fa-spinner {
+  font-size: 0.9rem;
+  color: #0d6efd;
+}
+.btn-fase-lista[disabled] {
+  opacity: 0.7;
+  cursor: not-allowed;
+}

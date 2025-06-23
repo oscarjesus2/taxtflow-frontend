@@ -1,0 +1,66 @@
+<div class="card-informe" [ngClass]="[
+       colorClasePorTipo(informe.tipoInforme),
+       claseAnimacionPorEstado(informe.estado)
+     ]">
+  <div class="estado-indicador" [ngClass]="estadoClase(informe.estado)"></div>
+  <div class="card-header">
+    <div class="periodo">
+      <i class="fas fa-calendar-alt"></i>
+      {{ getPeriodoLegibleDesdePeriodo(informe.periodo) }}
+    </div>
+
+  </div>
+
+  <div class="card-body">
+    <div><strong>Reporte:</strong> {{ getDescripcionTipo(informe.tipoInforme) }}</div>
+    <div><strong>Cliente:</strong> {{ informe.cliente?.razonSocial }}</div>
+    <div><strong>FTP:</strong> {{ informe.ubicacionFtp || 'N/A' }}</div>
+    <div><strong>Drive:</strong> {{ informe.ubicacionDrive || 'N/A' }}</div>
+
+    <div class="card-subinfo" *ngIf="fasesCompletadas().length > 0">
+      <strong>Fases listas:</strong>
+      <div class="fase-botones">
+        <div class="btn-fase-wrapper" *ngFor="let fase of fasesCompletadas()">
+          <button class="btn-fase-lista" [disabled]="isDescargandoFase === fase.clave"
+            (click)="descargarFase(fase.clave)">
+            <ng-container *ngIf="isDescargandoFase !== fase.clave; else loading">
+              <i class="fas fa-file-excel"></i> {{ fase.nombre }}
+            </ng-container>
+            <ng-template #loading>
+              <i class="fas fa-spinner fa-spin"></i> Descargando...
+            </ng-template>
+            <span class="btn-fase-remove" (click)="eliminarFase(fase.clave, $event)" title="Eliminar fase">
+              <i class="fas fa-times"></i>
+            </span>
+          </button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-footer">
+    <div class="footer-pendientes" *ngIf="fasesPendientes().length > 0">
+      <div class="pendientes-titulo">
+        <i class="fas fa-hourglass-half"></i> Fases pendientes:
+      </div>
+      <div class="pendientes-lista">
+        <span *ngFor="let fase of fasesPendientes()" class="fase-pendiente">
+          <i [class]="fase.icon"></i> {{ fase.nombre }}
+        </span>
+      </div>
+    </div>
+
+    <div class="footer-acciones">
+      <button class="btn-eliminar" *ngIf="informe.estado === 'ERROR' || informe.estado === 'FINALIZADO_PARCIAL'"
+        (click)="reintentarInforme()" title="Reintentar procesamiento">
+        <i class="fas fa-sync-alt"></i>
+      </button>
+      <button class="btn-eliminar" (click)="eliminarInforme()" title="Eliminar informe">
+        <i class="fas fa-trash-alt"></i>
+      </button>
+
+    </div>
+  </div>
+
+</div>

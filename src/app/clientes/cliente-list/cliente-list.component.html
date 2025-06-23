@@ -1,0 +1,27 @@
+<div class="clientes-container">
+  <div class="clientes-header">
+    <h2>Clientes</h2>
+    <button class="nuevo-cliente" (click)="nuevoCliente()">+ Nuevo Cliente</button>
+  </div>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>RUC</th>
+        <th>Razón Social</th>
+        <th>Destino</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let cliente of clientes">
+        <td>{{ cliente.ruc }}</td>
+        <td>{{ cliente.razonSocial }}</td>
+        <td>{{ cliente.tipoDestino }}</td>
+        <td>
+          <button class="nuevo-cliente" (click)="editarCliente(cliente)">Editar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

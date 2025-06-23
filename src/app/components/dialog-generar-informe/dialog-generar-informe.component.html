@@ -1,0 +1,40 @@
+<div class="formulario-informe">
+  <h3>Generar Informe Manual</h3>
+
+  <form (ngSubmit)="generar()" class="form-grid">
+    <div class="form-group">
+      <label>Cliente</label>
+      <select [(ngModel)]="clienteId" name="clienteId" required>
+        <option *ngFor="let c of clientes" [value]="c.id">{{ c.razonSocial }}</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Tipo de Informe</label>
+      <select [(ngModel)]="tipoInforme" name="tipoInforme" required>
+        <option *ngFor="let key of tipoInformeKeys" [value]="key">
+          {{ tipoInformeDescripcion[key] }}
+        </option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Año</label>
+      <select [(ngModel)]="anio" name="anio" required>
+        <option *ngFor="let a of anios" [value]="a">{{ a }}</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Mes</label>
+      <select [(ngModel)]="mes" name="mes" required>
+        <option *ngFor="let m of meses" [value]="m.valor">{{ m.nombre }}</option>
+      </select>
+    </div>
+
+    <div class="acciones">
+      <button type="submit" class="btn-save">Generar</button>
+      <button type="button" class="btn-cancel" (click)="cancelar()">Cancelar</button>
+    </div>
+  </form>
+</div>

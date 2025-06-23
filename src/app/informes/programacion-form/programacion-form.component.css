@@ -1,0 +1,95 @@
+/* Contenedor principal: misma estética que cliente-form */
+.form-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Título */
+h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: #333;
+}
+
+/* ───────────  Grid  ─────────── */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group.check {
+  justify-content: end;
+}
+
+label {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+input,
+select {
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border 0.2s ease-in-out;
+}
+
+input:focus,
+select:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+/* ───────────  Botones  ─────────── */
+.button-group {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+button {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+button.save {
+  background-color: #28a745;
+  color: #fff;
+}
+
+button.cancel {
+  background-color: #6c757d;
+  color: #fff;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+/* Badge reutilizado (por si lo necesitas dentro del form) */
+.badge {
+  padding: .25rem .5rem;
+  border-radius: 6px;
+  font-size: .75rem;
+}
+.badge-info      { background: #0dcaf0; color: #000; }

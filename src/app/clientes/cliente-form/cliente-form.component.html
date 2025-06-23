@@ -1,0 +1,81 @@
+<div class="form-container">
+  <div class="form-group">
+    <label for="ruc">RUC *</label>
+    <input id="ruc" name="ruc" [(ngModel)]="cliente.ruc" required minlength="11" maxlength="11" #ruc="ngModel" />
+    <div *ngIf="ruc.invalid && ruc.touched" class="error">
+      <small *ngIf="ruc.errors?.['required']">El RUC es obligatorio.</small>
+      <small *ngIf="ruc.errors?.['minlength'] || ruc.errors?.['maxlength']">El RUC debe tener 11 dígitos.</small>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="razonSocial">Razón Social *</label>
+    <input id="razonSocial" name="razonSocial" [(ngModel)]="cliente.razonSocial" required #razon="ngModel" />
+    <div *ngIf="razon.invalid && razon.touched" class="error">
+      <small>La razón social es obligatoria.</small>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="usuarioSol">Usuario SOL</label>
+    <input id="usuarioSol" type="text" [(ngModel)]="cliente.usuarioSol">
+  </div>
+
+  <div class="form-group">
+    <label for="claveSol">Clave SOL</label>
+    <input id="claveSol" type="password" [(ngModel)]="cliente.claveSol">
+  </div>
+
+  <div class="form-group">
+    <label for="clientId">Client ID</label>
+    <input id="clientId" type="text" [(ngModel)]="cliente.clientId">
+  </div>
+
+  <div class="form-group">
+    <label for="clientSecret">Client Secret</label>
+    <input id="clientSecret" type="text" [(ngModel)]="cliente.clientSecret">
+  </div>
+
+  <div class="form-group">
+    <label for="tipoDestino">Tipo de Destino</label>
+    <select id="tipoDestino" name="tipoDestino" [(ngModel)]="cliente.tipoDestino" #tipo="ngModel">
+      <option value="">-- Seleccionar --</option>
+      <option value="FTP">FTP</option>
+      <option value="GOOGLE_DRIVE">Google Drive</option>
+      <option value="ONEDRIVE">OneDrive</option>
+    </select>
+  </div>
+
+  <div *ngIf="cliente.tipoDestino === 'FTP'">
+    <div class="form-group" *ngIf="cliente.tipoDestino === 'FTP'">
+      <label for="ftpHost">Host FTP</label>
+      <input id="ftpHost" name="ftpHost" [(ngModel)]="cliente.ftpHost" (ngModelChange)="resetEstadoConexion()"/>
+    </div>
+
+    <div class="form-group" *ngIf="cliente.tipoDestino === 'FTP'">
+      <label for="ftpUsuario">Usuario FTP</label>
+      <input id="ftpUsuario" name="ftpUsuario" [(ngModel)]="cliente.ftpUsuario" (ngModelChange)="resetEstadoConexion()" />
+    </div>
+
+    <div class="form-group" *ngIf="cliente.tipoDestino === 'FTP'">
+      <label for="ftpPassword">Contraseña FTP</label>
+      <input id="ftpPassword" name="ftpPassword" type="password" [(ngModel)]="cliente.ftpPassword" (ngModelChange)="resetEstadoConexion()" />
+    </div>
+    <div class="form-group" *ngIf="cliente.tipoDestino === 'FTP'">
+      <button class="test-ftp" (click)="probarConexionFTP()">Probar conexión FTP</button>
+      <span *ngIf="estadoConexionFtp === true" class="conexion-ok">✅ Conexión exitosa</span>
+      <span *ngIf="estadoConexionFtp === false" class="conexion-error">❌ Error en la conexión</span>
+    </div>
+
+  </div>
+
+  <div class="form-group" *ngIf="cliente.tipoDestino === 'GOOGLE_DRIVE'">
+    <label for="googleDriveFolderId">ID Carpeta Google Drive</label>
+    <input id="googleDriveFolderId" name="googleDriveFolderId" [(ngModel)]="cliente.googleDriveFolderId" />
+  </div>
+
+  <div class="button-group">
+    <button class="cancel" (click)="cancelar()">Cancelar</button>
+    <button class="save" (click)="guardar()">Guardar</button>
+  </div>
+</div>

@@ -1,0 +1,113 @@
+<div class="programaciones-container">
+  <!-- Cabecera -->
+  <div class="programaciones-header">
+    <h2>Programación de Informes</h2>
+    <button class="nuevo-programacion" (click)="nuevo()">
+      + Nueva Programación
+    </button>
+  </div>
+
+  <!-- Filtros -->
+  <div class="filtros-card">
+    <div class="filtros-row">
+      <!-- Cliente -->
+      <div class="filtro-item">
+        <label>Cliente</label>
+        <select [(ngModel)]="filtro.clienteId" (change)="aplicarFiltros()">
+          <option [ngValue]="null">Todos</option>
+          <option *ngFor="let c of clientes" [ngValue]="c.id">
+            {{ c.razonSocial }}
+          </option>
+        </select>
+      </div>
+
+      <!-- Tipo informe (múltiple) -->
+      <div class="filtro-item">
+        <label>Tipo de informe</label>
+        <select multiple size="3"
+                [(ngModel)]="filtro.tipos"
+                (change)="aplicarFiltros()">
+          <option *ngFor="let t of tipos">{{ t }}</option>
+        </select>
+      </div>
+
+      <!-- Próxima ejecución -->
+      <div class="filtro-item">
+        <label>Próxima ejecución</label>
+        <input type="date"
+               [(ngModel)]="filtro.fechaEjecucion"
+               (change)="aplicarFiltros()">
+      </div>
+
+      <!-- Solo activos -->
+      <div class="filtro-item check">
+        <label>
+          <input type="checkbox"
+                 [(ngModel)]="filtro.soloActivos"
+                 (change)="aplicarFiltros()"> Solo activos
+        </label>
+      </div>
+
+      <!-- Limpiar -->
+      <div class="filtro-item limpiar">
+        <button (click)="resetFiltros()">Limpiar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabla -->
+  <div class="tabla-wrapper">
+    <div *ngIf="loading" class="spinner-overlay">
+      <div class="spinner"></div>
+    </div>
+
+    <table class="tabla">
+      <thead>
+        <tr>
+          <th (click)="ordenarPor('clienteRazonSocial')"  class="sortable">Cliente</th>
+          <th (click)="ordenarPor('tipoInforme')" class="sortable">Tipo</th>
+          <th (click)="ordenarPor('frecuencia')"  class="sortable">Frecuencia</th>
+          <th (click)="ordenarPor('fechaProximaEjecucion')" class="sortable">
+            Próxima Ejecución
+          </th>
+          <th>Destino</th>
+          <th (click)="ordenarPor('activo')" class="sortable centro">Activo</th>
+          <th class="centro">Acciones</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let p of pageRows">
+          <td>{{ p.clienteRazonSocial }}</td>
+          <td><span class="badge badge-info">{{ p.tipoInforme }}</span></td>
+          <td>{{ p.frecuencia }}</td>
+          <td>{{ p.fechaProximaEjecucion | date:'dd/MM/yyyy HH:mm' }}</td>
+          <td>{{ p.destino }}</td>
+          <td class="centro">
+            <span [class.badge]="true"
+                  [class.badge-success]="p.activo"
+                  [class.badge-secondary]="!p.activo">
+              {{ p.activo ? 'Sí' : 'No' }}
+            </span>
+          </td>
+          <td class="centro acciones">
+            <button (click)="editar(p)">✏️</button>
+            <button (click)="duplicar(p)">📄</button>
+            <button class="eliminar" (click)="eliminar(p.id)">🗑️</button>
+          </td>
+        </tr>
+
+        <tr *ngIf="!loading && pageRows.length === 0">
+          <td colspan="7" class="sin-resultados">Sin resultados</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Paginación -->
+  <div class="paginacion" *ngIf="totalPaginas > 1">
+    <button (click)="cambiarPagina(paginaActual-1)" [disabled]="paginaActual===1">«</button>
+    <span>{{ paginaActual }} / {{ totalPaginas }}</span>
+    <button (click)="cambiarPagina(paginaActual+1)" [disabled]="paginaActual===totalPaginas">»</button>
+  </div>
+</div>
