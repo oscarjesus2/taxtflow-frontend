@@ -30,7 +30,6 @@
     "file-saver": "^2.0.5",
     "keycloak-js": "^21.1.2",
     "ng2-charts": "^4.1.1",
-    "ngx-charts": "^3.0.2",
     "rxjs": "~7.5.0",
     "sweetalert2": "^11.22.0",
     "tslib": "^2.3.0",
