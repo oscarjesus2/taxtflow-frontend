@@ -3,6 +3,7 @@ import { Observable } from "rxjs";
 import { InformeGenerado } from "../models/informe-generado.model";
 import { Injectable } from "@angular/core";
 import { environment } from "src/environments/environment";
+import { HistorialResponse } from "../models/historial.model";
 
 @Injectable({ providedIn: 'root' })
 export class InformeService {
@@ -27,6 +28,9 @@ export class InformeService {
       params: { clienteId, tipo, periodo }
     });
   }
+  generarInformesMasivos(payload: { clienteId: number; periodos: string[]; tiposInforme: string[];}): Observable<{ generados: string[]; omitidos: string[] }> {
+    return this.http.post<{ generados: string[]; omitidos: string[] }>(`${this.apiUrl}/generar-masivo`, payload);
+  }
 
   eliminarFase(id: number, fase: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}/fase/${fase}`);
@@ -44,5 +48,16 @@ export class InformeService {
     return this.http.get(urlDescarga, {
       responseType: 'blob'
     });
+  }
+
+  getHistorial(informeId: number) {
+    return this.http.get<HistorialResponse>(
+      `${this.apiUrl}/${informeId}/historial`);
+  }
+
+  downloadBackup(informeId: number, histId: number) {
+    return this.http.get(
+      `${this.apiUrl}/${informeId}/historial/backup/${histId}/descargar`,
+      { responseType: 'blob' });
   }
 }

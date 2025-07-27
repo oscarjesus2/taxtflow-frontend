@@ -2,6 +2,14 @@
  * Load `$localize` onto the global scope - used if i18n tags appear in Angular templates.
  */
 import '@angular/localize/init';
+
+/*********************************************************************
+ * Polyfills para librerías que esperan objetos de Node.js
+ *********************************************************************/
+(window as any).global = window;          // ‹–– arregla “global is not defined”
+import { Buffer } from 'buffer';
+(window as any).Buffer = Buffer;          // ‹–– evita futuros errores con Buffer
+
 /**
  * This file includes polyfills needed by Angular and is loaded before the app.
  * You can add your own extra polyfills to this file.

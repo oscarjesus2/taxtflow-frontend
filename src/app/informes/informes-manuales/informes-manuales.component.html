@@ -1,21 +1,24 @@
 <div class="informes-container">
+  <!-- ===== cabecera ===== -->
   <div class="header">
     <h2>Informes Generados</h2>
-    <button class="btn-generar" (click)="abrirDialogoGenerar()">+ Generar Informe</button>
+    <button class="btn-generar" (click)="nuevo()">+ Generar Informe</button>
   </div>
 
+  <!-- ===== filtros ===== -->
   <div class="filtros">
-
+    <!-- cliente -->
     <div class="form-group">
       <label>Cliente</label>
       <select [(ngModel)]="filtroClienteId" (change)="filtrarInformes()">
         <option value="">Todos</option>
-        <option *ngFor="let cliente of clientes" [value]="cliente.id">{{ cliente.razonSocial }}</option>
+        <option *ngFor="let cliente of clientes" [value]="cliente.id">
+          {{ cliente.razonSocial }}
+        </option>
       </select>
     </div>
 
-
-
+    <!-- tipo de informe -->
     <div class="form-group">
       <label>Tipo de Informe</label>
       <select [(ngModel)]="filtroTipo" (change)="filtrarInformes()">
@@ -26,14 +29,16 @@
       </select>
     </div>
 
+    <!-- año -->
     <div class="form-group">
       <label>Año</label>
-      <select [(ngModel)]="filtroAnio" name="anio" (change)="filtrarInformes()" required>
+      <select [(ngModel)]="filtroAnio" (change)="filtrarInformes()">
         <option value="">Todos</option>
         <option *ngFor="let a of anios" [value]="a">{{ a }}</option>
       </select>
     </div>
 
+    <!-- mes -->
     <div class="form-group">
       <label>Mes</label>
       <select [(ngModel)]="filtroMes" (change)="filtrarInformes()">
@@ -41,21 +46,40 @@
         <option *ngFor="let m of meses" [value]="m.valor">{{ m.nombre }}</option>
       </select>
     </div>
-    <div class="form-group">
 
+    <!-- botón refrescar -->
+    <div class="form-group">
       <button class="btn-refrescar-lista" (click)="refrescarLista()" [disabled]="isRefrescando">
         <i *ngIf="!isRefrescando" class="fas fa-sync-alt"></i>
         <i *ngIf="isRefrescando" class="fas fa-spinner fa-spin"></i>
-        {{ isRefrescando ? 'Actualizando...' : 'Actualizar lista' }}
+        {{ isRefrescando ? 'Actualizando…' : 'Actualizar lista' }}
       </button>
     </div>
   </div>
 
+  <!-- ===== listado agrupado ===== -->
+  <div *ngFor="let grupo of groupedInformes; let i = index" class="mb-3">
+    <!-- cabecera colapsable -->
+    <button type="button"
+            class="btn-grupo fw-bold"
+            data-bs-toggle="collapse"
+            [attr.data-bs-target]="'#collapseTipo' + i"
+            aria-expanded="true"
+            [attr.aria-controls]="'collapseTipo' + i">
+      <span>{{ grupo.descripcion }} ({{ grupo.informes.length }})</span>
+      <i class="fas fa-chevron-down chevron"></i>
+    </button>
 
-
-  <div class="grid">
-    <app-informe-card *ngFor="let informe of informesFiltrados" [informe]="informe" (eliminar)="eliminarInforme($event)"
-      (reintentar)="refrescarLista()">
-    </app-informe-card>
+    <!-- contenido del grupo -->
+    <div [id]="'collapseTipo' + i" class="collapse show">
+      <div class="grid">
+        <app-informe-card
+          *ngFor="let informe of grupo.informes"
+          [informe]="informe"
+          (eliminar)="eliminarInforme($event)"
+          (reintentar)="refrescarLista()">
+        </app-informe-card>
+      </div>
+    </div>
   </div>
 </div>

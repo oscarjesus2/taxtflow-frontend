@@ -2,18 +2,22 @@
        colorClasePorTipo(informe.tipoInforme),
        claseAnimacionPorEstado(informe.estado)
      ]">
-  <div class="estado-indicador" [ngClass]="estadoClase(informe.estado)"></div>
+  <div class="estado-indicador" [ngClass]="estadoClase(informe.estado)" (click)="abrirHistorial()"
+    title="Ver historial"></div>
   <div class="card-header">
     <div class="periodo">
       <i class="fas fa-calendar-alt"></i>
       {{ getPeriodoLegibleDesdePeriodo(informe.periodo) }}
     </div>
-
+    <span class="badge-reintentos" *ngIf="reintentosDisponibles > 0" title="Intentos manuales restantes">
+      <i class="fas fa-sync-alt"></i>
+      {{ reintentosDisponibles }}
+    </span>
   </div>
 
   <div class="card-body">
     <div><strong>Reporte:</strong> {{ getDescripcionTipo(informe.tipoInforme) }}</div>
-    <div><strong>Cliente:</strong> {{ informe.cliente?.razonSocial }}</div>
+    <div><strong>Cliente:</strong> {{ informe.clienteRazonSocial }}</div>
     <div><strong>FTP:</strong> {{ informe.ubicacionFtp || 'N/A' }}</div>
     <div><strong>Drive:</strong> {{ informe.ubicacionDrive || 'N/A' }}</div>
 
@@ -37,6 +41,18 @@
         </div>
       </div>
     </div>
+
+    <div class="validacion-propuesta" *ngIf="informe.statusCodePropuesta === 200">
+      <strong>Validar contra propuesta:</strong>
+      <div class="validacion-opciones">
+        <button class="btn-validar" (click)="subirExcel('ventas')">
+          <i class="fas fa-file-upload"></i> Validar Ventas
+        </button>
+        <button class="btn-validar" (click)="subirExcel('compras')">
+          <i class="fas fa-file-upload"></i> Validar Compras
+        </button>
+      </div>
+    </div>
   </div>
 
   <div class="card-footer">
@@ -53,7 +69,7 @@
 
     <div class="footer-acciones">
       <button class="btn-eliminar" *ngIf="informe.estado === 'ERROR' || informe.estado === 'FINALIZADO_PARCIAL'"
-        (click)="reintentarInforme()" title="Reintentar procesamiento">
+        [disabled]="reintentosDisponibles === 0" (click)="reintentarInforme()" title="Reprocesar todo">
         <i class="fas fa-sync-alt"></i>
       </button>
       <button class="btn-eliminar" (click)="eliminarInforme()" title="Eliminar informe">

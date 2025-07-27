@@ -3,6 +3,9 @@ import Swal from 'sweetalert2';
 
 @Injectable({ providedIn: 'root' })
 export class AlertService {
+  validacion(message: any) {
+      Swal.fire('Validación', message, 'warning');
+  }
   success(message: string): void {
     Swal.fire('¡Éxito!', message, 'success');
   }

@@ -1,0 +1,49 @@
+<div class="form-container">
+  <h3>Generar Informes Manuales</h3>
+
+  <form (ngSubmit)="generar()">
+    <div class="form-grid">
+      <!-- Cliente -->
+      <div class="form-group">
+        <label>Cliente *</label>
+        <select [(ngModel)]="clienteId" name="clienteId" required>
+          <option *ngFor="let c of clientes" [value]="c.id">{{ c.razonSocial }}</option>
+        </select>
+      </div>
+
+      <!-- Año -->
+      <div class="form-group">
+        <label>Año *</label>
+        <select [(ngModel)]="anio" name="anio" (change)="actualizarMeses()" required>
+          <option *ngFor="let a of anios" [value]="a">{{ a }}</option>
+        </select>
+      </div>
+
+      <!-- Meses -->
+      <div class="form-group">
+        <label>Meses *</label>
+        <div class="checkbox-grid">
+          <label *ngFor="let m of meses">
+            <input type="checkbox" (change)="toggleMes(m.valor)"> {{ m.nombre }}
+          </label>
+        </div>
+      </div>
+
+      <!-- Tipos de Informe -->
+      <div class="form-group">
+        <label>Tipos de Informe *</label>
+        <div class="checkbox-grid">
+          <label *ngFor="let t of tipoInformeKeys">
+            <input type="checkbox" (change)="toggleTipo(t)"> {{ tipoInformeDescripcion[t] }}
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Botones -->
+    <div class="button-group">
+      <button type="button" class="cancel" (click)="cancelar()">Cancelar</button>
+      <button type="submit" class="save">Generar</button>
+    </div>
+  </form>
+</div>

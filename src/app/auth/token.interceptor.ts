@@ -18,7 +18,7 @@ export class TokenInterceptor implements HttpInterceptor {
   constructor(
     private keycloakService: KeycloakService,
     private alertService: AlertService
-  ) {}
+  ) { }
 
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     // 🔸 1) Pedimos a Keycloak que refresque si el access-token caduca en <30 s
@@ -36,15 +36,23 @@ export class TokenInterceptor implements HttpInterceptor {
 
       // 🔸 3) Gestionamos 401 y otros errores
       catchError((error: HttpErrorResponse) => {
+        const codigo = error?.error?.codigo || '';
+        const mensaje = error?.error?.mensaje || error?.message || 'Error inesperado del servidor';
+
         if (error.status === 401 && !this.alreadyRedirected) {
           this.alreadyRedirected = true;
           this.keycloakService.logout();
+        } else if (error.status === 400) {
+          this.alertService.validacion(mensaje);
+        } else if (error.status === 403) {
+          this.alertService.info(mensaje);
         } else {
-          const message = error?.error?.message || 'Error inesperado del servidor';
-          this.alertService.error(message);
+          this.alertService.error(mensaje);
         }
+
         return throwError(() => error);
       })
+
     );
   }
 }

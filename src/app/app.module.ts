@@ -21,7 +21,6 @@ import { InformesManualesComponent } from './informes/informes-manuales/informes
 import { InformeCardComponent } from './informes/informe-card/informe-card.component';
 import { ProgramacionesComponent } from './informes/programaciones/programaciones.component';
 import { ProgramacionFormComponent } from './informes/programacion-form/programacion-form.component';
-import { DialogGenerarInformeComponent } from './components/dialog-generar-informe/dialog-generar-informe.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDialogModule } from '@angular/material/dialog';
 import { SharedModule } from './shared/shared.module';
@@ -29,6 +28,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { EjecucionesDialogComponent } from './dashboard/programaciones/EjecucionesDialogComponent';
 import { ProgDetalleComponent } from './dashboard/programaciones/ProgDetalleComponent';
 import { NgChartsModule } from 'ng2-charts';
+import { GenerarInformeComponent } from './informes/generar-informe/generar-informe.component';
+import { InformeLogModalComponent } from './components/informe-log-modal/informe-log-modal.component';
+import { DialogValidacionPropuestaComponent } from './components/dialog-validacion-propuesta/dialog-validacion-propuesta';
 
 export function initializeKeycloak(keycloak: KeycloakService): () => Promise<boolean> {
   return () => keycloak.init();
@@ -48,9 +50,11 @@ export function initializeKeycloak(keycloak: KeycloakService): () => Promise<boo
     InformeCardComponent,
     ProgramacionesComponent,
     ProgramacionFormComponent,
-    DialogGenerarInformeComponent,
+    GenerarInformeComponent,
     EjecucionesDialogComponent,
     ProgDetalleComponent,
+    InformeLogModalComponent,
+    DialogValidacionPropuestaComponent,
   ],
   imports: [
     BrowserModule,

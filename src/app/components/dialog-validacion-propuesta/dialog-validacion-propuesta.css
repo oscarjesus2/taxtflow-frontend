@@ -1,0 +1,20 @@
+input[type="file"] {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.resumen-validacion {
+  margin-top: 1.5rem;
+  background-color: #f7f7f7;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.resumen-validacion ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.resumen-validacion li {
+  margin: 0.4rem 0;
+}

@@ -3,11 +3,15 @@ export interface InformeGenerado {
   id: number;
   estado: string;                 // → podrías tiparlo con un enum
   tipoInforme: string;            // → idem
+  clienteRazonSocial: string;
   periodo: string;
   urlDescargaStreaming: string;
   ubicacionFtp?: string;
   ubicacionDrive?: string;
   fechaGeneracion: string;        // ISO 8601; convénte a Date en el front si lo necesitas
+
+  reintentoOfUsuario: number;          // usados
+  maxReintentosManuales: number;       // tope que viene de la licencia
 
   /* Fase REGISTRADO */
   contenidoRegistrado?: string;

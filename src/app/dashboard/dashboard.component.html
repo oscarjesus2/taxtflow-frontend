@@ -39,8 +39,9 @@
   <section class="section">
     <h3>Próximas programaciones</h3>
     <ngb-accordion>
-      <ngb-panel *ngFor="let prog of proximas" [id]="prog.id + ''">
-                 [title]="prog.clienteRuc + ' – ' + prog.tipoInforme + ' ('+ prog.proximoInstante +')'">
+      <ngb-panel *ngFor="let prog of proximas"
+           [id]="prog.id + ''"
+           [title]="prog.clienteRuc + ' – ' + prog.tipoInforme + ' ('+ prog.proximoInstante +')'">4
         <ng-template ngbPanelContent>
           <p>Frecuencia: {{ prog.frecuencia }} – formato {{ prog.formato }}</p>
           <button class="btn"
@@ -57,10 +58,11 @@
     <h3>Últimos informes</h3>
     <table>
       <thead>
-        <tr><th>Fecha</th><th>Cliente</th><th>Tipo</th><th>Estado</th><th></th></tr>
+        <tr><th>Periodo</th><th>Fecha</th><th>Cliente</th><th>Tipo</th><th>Estado</th><th></th></tr>
       </thead>
       <tbody>
         <tr *ngFor="let i of informes">
+          <td>{{ i.periodo }}</td>
           <td>{{ i.fecha | date:'short' }}</td>
           <td>{{ i.cliente }}</td>
           <td>{{ i.tipo }}</td>

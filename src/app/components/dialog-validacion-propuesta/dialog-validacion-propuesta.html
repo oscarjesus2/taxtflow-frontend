@@ -1,0 +1,34 @@
+<h2 mat-dialog-title>Validación de {{ data.tipo }}</h2>
+
+<div mat-dialog-content>
+  <p>Selecciona el archivo Excel para validar contra la propuesta del SIRE.</p>
+
+  <input type="file" (change)="seleccionarArchivo($event)" accept=".xlsx,.xls" />
+
+  <button mat-flat-button color="primary" (click)="enviarArchivo()" [disabled]="isCargando || !archivoSeleccionado">
+    <i class="fas fa-check-circle"></i> Validar
+  </button>
+
+<div *ngIf="isCargando" style="margin-top: 1rem;">
+  <i class="fas fa-spinner fa-spin"></i> Validando...
+</div>
+
+
+  <div *ngIf="resumen" class="resumen-validacion">
+    <h3>Resumen</h3>
+    <ul>
+      <li><strong>Faltantes:</strong> {{ resumen.faltantes }}</li>
+      <li><strong>Sobrantes:</strong> {{ resumen.sobrantes }}</li>
+      <li><strong>Dif. IGV:</strong> {{ resumen.diferenciasIgv }}</li>
+      <li><strong>Dif. Total:</strong> {{ resumen.diferenciasTotal }}</li>
+    </ul>
+
+    <button mat-stroked-button color="accent" (click)="descargarResultado()">
+      <i class="fas fa-download"></i> Descargar Excel validado
+    </button>
+  </div>
+</div>
+
+<div mat-dialog-actions align="end">
+  <button mat-button (click)="cerrar()">Cerrar</button>
+</div>

@@ -10,7 +10,8 @@ import { ConfiguracionComponent } from './configuracion/configuracion/configurac
 import { ClienteFormComponent } from './clientes/cliente-form/cliente-form.component';
 import { ProgramacionFormComponent } from './informes/programacion-form/programacion-form.component';
 import { ProgDetalleComponent } from './dashboard/programaciones/ProgDetalleComponent';
-
+import { GenerarInformeComponent } from './informes/generar-informe/generar-informe.component';
+ 
 const routes: Routes = [
   {
     path: '',
@@ -22,10 +23,11 @@ const routes: Routes = [
       { path: 'clientes/form', component: ClienteFormComponent },
       { path: 'clientes/form/:id', component: ClienteFormComponent },
       { path: 'informes', component: InformesManualesComponent },
+      { path: 'informes/generar', component: GenerarInformeComponent },
       { path: 'programaciones', component: ProgramacionesComponent },
       { path: 'programaciones/form', component: ProgramacionFormComponent },
       { path: 'configuracion', component: ConfiguracionComponent },
-       {path:'programaciones/:id',component:ProgDetalleComponent},
+       {path: 'programaciones/:id',component:ProgDetalleComponent},
     ]
   }
 ];

@@ -1,5 +1,8 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { saveAs } from 'file-saver';
+import { DialogValidacionPropuestaComponent } from 'src/app/components/dialog-validacion-propuesta/dialog-validacion-propuesta';
+import { InformeLogModalComponent } from 'src/app/components/informe-log-modal/informe-log-modal.component';
 import { TipoInformeDescripcion } from 'src/app/enums/tipo-informe.enum';
 import { InformeGenerado } from 'src/app/models/informe-generado.model';
 import { InformeService } from 'src/app/services/informe.service';
@@ -19,7 +22,15 @@ export class InformeCardComponent {
   tipoInformeDescripcion = TipoInformeDescripcion;
   isDescargandoFase: string | null = null;
 
-  constructor(private informeService: InformeService, private alertService: AlertService) { }
+  constructor(private dialog: MatDialog, private informeService: InformeService, private alertService: AlertService) { }
+
+  get reintentosDisponibles(): number {
+    return Math.max(
+      0,
+      (this.informe.maxReintentosManuales ?? 0) -
+      (this.informe.reintentoOfUsuario ?? 0)
+    );
+  }
 
   getPeriodoLegible(fecha: string): string {
     if (!fecha) return '';
@@ -108,66 +119,78 @@ export class InformeCardComponent {
 
 
   descargarFase(fase: string) {
-  this.isDescargandoFase = fase;
+    this.isDescargandoFase = fase;
 
-  switch (fase) {
-    case 'REGISTRADO':
-      this.informe.urlDescargaStreaming = this.informe.urlDescargaRegistrado ?? '';
-      break;
-    case 'PRELIMINAR':
-      this.informe.urlDescargaStreaming = this.informe.urlDescargaPreliminar ?? '';
-      break;
-    case 'PROPUESTA':
-      this.informe.urlDescargaStreaming = this.informe.urlDescargaPropuesta ?? '';
-      break;
-    case 'RESUMEN':
-      this.informe.urlDescargaStreaming = this.informe.urlDescargaResumen ?? '';
-      break;
-    default:
-      alert('Fase no válida para descarga.');
-      this.isDescargandoFase = null;
-      return;
-  }
-
-  const url = this.informe.urlDescargaStreaming.replace('{}', this.informe.id.toString());
-
-  this.informeService.descargarInforme(url).subscribe({
-    next: (blob) => {
-      if (!blob || blob.size < 3400) {
-        this.alertService.info('El informe no contiene registros para esta fase.');
+    switch (fase) {
+      case 'REGISTRADO':
+        this.informe.urlDescargaStreaming = this.informe.urlDescargaRegistrado ?? '';
+        break;
+      case 'PRELIMINAR':
+        this.informe.urlDescargaStreaming = this.informe.urlDescargaPreliminar ?? '';
+        break;
+      case 'PROPUESTA':
+        this.informe.urlDescargaStreaming = this.informe.urlDescargaPropuesta ?? '';
+        break;
+      case 'RESUMEN':
+        this.informe.urlDescargaStreaming = this.informe.urlDescargaResumen ?? '';
+        break;
+      default:
+        alert('Fase no válida para descarga.');
         this.isDescargandoFase = null;
         return;
-      }
-
-      const nombre = `${this.informe.periodo}_${this.informe.tipoInforme}_${fase}.xlsx`;
-      saveAs(blob, nombre);
-      this.isDescargandoFase = null;
-    },
-    error: () => {
-      this.alertService.error('No se pudo descargar el informe.');
-      this.isDescargandoFase = null;
     }
-  });
-}
+
+    const url = this.informe.urlDescargaStreaming.replace('{}', this.informe.id.toString());
+
+    this.informeService.descargarInforme(url).subscribe({
+      next: (blob) => {
+        console.log(blob.size);
+        if (!blob || blob.size < 3320) {
+          this.alertService.info('El informe no contiene registros para esta fase.');
+          this.isDescargandoFase = null;
+          return;
+        }
+
+        const nombre = `${this.informe.periodo}_${this.informe.tipoInforme}_${fase}.xlsx`;
+        saveAs(blob, nombre);
+        this.isDescargandoFase = null;
+      },
+      error: () => {
+        this.alertService.error('No se pudo descargar el informe.');
+        this.isDescargandoFase = null;
+      }
+    });
+  }
 
 
   reintentarInforme() {
     this.alertService.confirm(
-      '¿Reintentar procesamiento?',
-      'Se reiniciarán los reintentos y se volverá a procesar todas las fases.'
+      '¿Reprocesar todo?',
+      'Se reiniciarán los intentos y se volverá a procesar todas las fases.'
     ).then(confirmado => {
       if (!confirmado) return;
 
       this.informeService.reintentarInforme(this.informe.id).subscribe({
-        next: () => {
-          this.informe.estado = 'EN_PROCESO';
-          this.informe.reintentosRegistrado = 0;
-          this.reintentar.emit();
-        },
         error: () => {
           this.alertService.error('No se pudo reiniciar el informe.');
         }
       });
+    });
+  }
+  abrirHistorial(): void {
+    this.dialog.open(InformeLogModalComponent, {
+      width: '840px',
+      data: { informeId: this.informe.id }
+    });
+  }
+
+  subirExcel(tipo: 'ventas' | 'compras') {
+    this.dialog.open(DialogValidacionPropuestaComponent, {
+      width: '600px',
+      data: {
+        idInforme: this.informe.id,
+        tipo
+      }
     });
   }
 
@@ -187,6 +210,7 @@ export class InformeCardComponent {
       case 'PENDIENTE': return 'estado-pendiente';
       case 'EN_PROCESO': return 'estado-en-proceso';
       case 'FINALIZADO': return 'estado-finalizado';
+      case 'FINALIZADO_PARCIAL': return 'estado-finalizado-parcial';
       case 'ERROR': return 'estado-error';
       default: return '';
     }
@@ -201,6 +225,9 @@ export class InformeCardComponent {
       case 'ERROR':
         return 'animacion-error';
       case 'FINALIZADO':
+        return '';
+      case 'FINALIZADO_PARCIAL':
+        return '';
       default:
         return ''; // sin animación
     }

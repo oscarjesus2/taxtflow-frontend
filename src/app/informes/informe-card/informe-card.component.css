@@ -116,6 +116,11 @@
 .estado-finalizado {
   background-color: green;
 }
+
+.estado-finalizado-parcial {
+  background-color: greenyellow;
+}
+
 .estado-error {
   background-color: red;
   animation: shake 0.5s ease-in-out infinite;
@@ -347,4 +352,40 @@
 .btn-fase-lista[disabled] {
   opacity: 0.7;
   cursor: not-allowed;
+}
+.badge-reintentos {
+  background: #17a2b8;      /* turquesa Bootstrap-ish */
+  color: #fff;
+  padding: 2px 6px;
+  font-size: 0.75rem;
+  border-radius: 8px;
+  margin-left: .5rem;
+}
+
+.validacion-propuesta {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #444;
+}
+
+.validacion-opciones {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-top: 0.4rem;
+}
+
+.btn-validar {
+  background-color: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffeeba;
+  border-radius: 6px;
+  padding: 6px 10px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: background-color 0.2s;
+}
+
+.btn-validar:hover {
+  background-color: #ffe8a1;
 }
